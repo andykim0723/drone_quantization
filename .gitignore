@@ -1,2 +1,4 @@
 weights/
 runs/
+datasets/
+*.pt
