@@ -7,7 +7,7 @@ this repository is for model quantization for object tracking model for visdrone
 You have to first train the object detection model, then infer with object tracker to get object tracking results.
 ### 0. download datasets
 * download the VisDrone detection/tracking data in [VisDrone-Dataset](https://github.com/VisDrone/VisDrone-Dataset). 
-* **VisDrone2019-DET-train** and **VisDrone2019-DET-test-dev** are used for training object detector, **VisDrone2019-DET-val** and **VisDrone2019-MOT-val** are used for detection/tracking evaluation.   
+* **VisDrone2019-DET-train** and **VisDrone2019-DET-test-dev** -> train MOD, **VisDrone2019-DET-val** and **VisDrone2019-MOT-val** -> test MOD, MOT.   
 
 ### 1.  train object detector
 ```
