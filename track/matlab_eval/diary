@@ -1,0 +1,11 @@
+{다음 작업 중 사용자에 의해 종료됨: <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('createIntImg', 'C:\Users\andy\Desktop\VisDrone2018-VID-toolkit-master\createIntImg.m', 14)" style="font-weight:bold">createIntImg</a> (<a href="matlab: opentoline('C:\Users\andy\Desktop\VisDrone2018-VID-toolkit-master\createIntImg.m',14,0)">14번 라인</a>)
+
+
+다음에서: <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('dropObjectsInIgr', 'C:\Users\andy\Desktop\VisDrone2018-VID-toolkit-master\dropObjectsInIgr.m', 21)" style="font-weight:bold">dropObjectsInIgr</a> (<a href="matlab: opentoline('C:\Users\andy\Desktop\VisDrone2018-VID-toolkit-master\dropObjectsInIgr.m',21,0)">21번 라인</a>)
+        intIgrMap = createIntImg(double(igrMap));
+
+다음에서: <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('saveAnnoRes', 'C:\Users\andy\Desktop\VisDrone2018-VID-toolkit-master\saveAnnoRes.m', 12)" style="font-weight:bold">saveAnnoRes</a> (<a href="matlab: opentoline('C:\Users\andy\Desktop\VisDrone2018-VID-toolkit-master\saveAnnoRes.m',12,0)">12번 라인</a>)
+    [newgt, newdet] = dropObjectsInIgr(oldgt, olddet, imgHeight, imgWidth);
+
+다음에서: <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('evalVID', 'C:\Users\andy\Desktop\VisDrone2018-VID-toolkit-master\evalVID.m', 18)" style="font-weight:bold">evalVID</a> (<a href="matlab: opentoline('C:\Users\andy\Desktop\VisDrone2018-VID-toolkit-master\evalVID.m',18,0)">18번 라인</a>)
+} 
