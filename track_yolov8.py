@@ -172,7 +172,7 @@ def run(data,
         print(f'{k}:{np.mean(v)}') 
 
     # save inference time in txt file
-    with open(f'{result_path}/{dirname}/inference_time.txt', 'w') as f:
+    with open(f'{save_path}/{dirname}/inference_time.txt', 'w') as f:
         for k, v in time_statistics.items():
             f.write(f'{k}:{np.mean(v)}') 
 
