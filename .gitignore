@@ -1,6 +1,8 @@
-weights/
 runs/
+scripts/
+weights/
 datasets/
-*.pt
-
 track/results/
+
+*.pt
+*.pyc

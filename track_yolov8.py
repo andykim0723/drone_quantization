@@ -51,6 +51,7 @@ def run(data,
         model=None,
         dataloader=None,
         save_dir=Path(''),
+        save_path=ROOT / 'track/results',
         config_deepsort=None,
         augment=False,
         verbose=False,
@@ -62,8 +63,7 @@ def run(data,
     # Initialize/load model and set device
     training = model is not None
     suffix = None 
-    result_path = ROOT / "track" / "results"
-    os.system(f"rm {result_path}/uav*.txt")
+    # os.system(f"rm {save_path}/uav*.txt")
     track_path = "../track"
 
     device = select_device(device, batch_size=batch_size)
@@ -110,10 +110,10 @@ def run(data,
     time_statistics = defaultdict(lambda:[]) 
 
     # get current date and time for result directory name
-    dirname = datetime.now().strftime("%Y%m%d-%H%M%S")
+    dirname = datetime.now().strftime("%m%d%H%M") + '-' + iou_thres + '_' + conf_thres
     # if dirname doesnt exist create it
-    if not os.path.exists(f'{result_path}/{dirname}'):
-        os.makedirs(f'{result_path}/{dirname}')
+    if not os.path.exists(f'{save_path}/{dirname}'):
+        os.makedirs(f'{save_path}/{dirname}')
 
     for x, y in enumerate(tbar):
         paths, has_next = y 
@@ -155,7 +155,7 @@ def run(data,
         
             predn = np.concatenate([track_ids, boxes, conf, class_id], axis=-1)
             predn = list(predn)
-            save_tracking_txt(predn, frame_num, video_name, f'{result_path}/{dirname}')
+            save_tracking_txt(predn, frame_num, video_name, f'{save_path}/{dirname}')
 
         speed = out.speed  
         for k, v in speed.items():
@@ -172,9 +172,9 @@ def run(data,
         print(f'{k}:{np.mean(v)}') 
 
     # save inference time in txt file
-    inference_time = time_statistics['inference'] +  time_statistics['postprocess']
-    with open(f'{result_path}/inference_time.txt', 'w') as f:
-        f.write(f'{inference_time}\n')
+    with open(f'{result_path}/{dirname}/inference_time.txt', 'w') as f:
+        for k, v in time_statistics.items():
+            f.write(f'{k}:{np.mean(v)}') 
 
 def parse_opt():
     parser = argparse.ArgumentParser()
@@ -199,6 +199,8 @@ def parse_opt():
     parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     parser.add_argument('--end2end', type=bool, default=False, help='is model compiled to end2end?') 
+    parser.add_argument('----save-path', type=str, default=ROOT / 'drone_quantization/track/results' ,help='path to save results')
+
 
     opt = parser.parse_args()
     opt.data = check_yaml(opt.data)  # check YAML
@@ -229,7 +231,7 @@ def main(opt):
             for i in x:  # img-size
                 LOGGER.info(f'\nRunning {f} point {i}...')
                 r, _, t = run(opt.data, weights=w, batch_size=opt.batch_size, imgsz=i, conf_thres=opt.conf_thres,
-                              iou_thres=opt.iou_thres, device=opt.device, save_json=opt.save_json, plots=False)
+                              iou_thres=opt.iou_thres, device=opt.device, save_json=opt.save_json, save_path=opt.save_apath, plots=False)
                 y.append(r + t)  # results and times
             np.savetxt(f, y, fmt='%10.4g')  # save
         os.system('zip -r study.zip study_*.txt')
