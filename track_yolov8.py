@@ -52,6 +52,7 @@ def run(data,
         dataloader=None,
         save_dir=Path(''),
         save_path=ROOT / 'track/results',
+        tracker="bytetrack",
         config_deepsort=None,
         augment=False,
         verbose=False,
@@ -110,7 +111,7 @@ def run(data,
     time_statistics = defaultdict(lambda:[]) 
 
     # get current date and time for result directory name
-    dirname = datetime.now().strftime("%m%d%H%M") + '-' + iou_thres + '_' + conf_thres
+    dirname = str(datetime.now().strftime("%m%d%H%M")) + '-' + str(iou_thres) + '_' + str(conf_thres)
     # if dirname doesnt exist create it
     if not os.path.exists(f'{save_path}/{dirname}'):
         os.makedirs(f'{save_path}/{dirname}')
@@ -132,7 +133,7 @@ def run(data,
             os.makedirs(f'{track_path}/example/inputs')
         im.save(f'{track_path}/example/inputs/frame_{x}.png',)
         out = model.track(im, persist=True, 
-                tracker='bytetrack.yaml', 
+                tracker=f'{tracker}.yaml', 
                 iou=iou_thres, conf=conf_thres, imgsz=(imgsz, imgsz))  # inference and training outputs
         
         out = out[0]
@@ -199,7 +200,8 @@ def parse_opt():
     parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     parser.add_argument('--end2end', type=bool, default=False, help='is model compiled to end2end?') 
-    parser.add_argument('----save-path', type=str, default=ROOT / 'drone_quantization/track/results' ,help='path to save results')
+    parser.add_argument('--save-path', type=str, default=ROOT / 'drone_quantization/track/results' ,help='path to save results')
+    parser.add_argument('--tracker', type=str, choices=['bytetrack', 'botsort'] ,default=ROOT / 'drone_quantization/track/results' ,help='path to save results')
 
 
     opt = parser.parse_args()
@@ -228,10 +230,11 @@ def main(opt):
         for w in opt.weights if isinstance(opt.weights, list) else [opt.weights]:
             f = f'study_{Path(opt.data).stem}_{Path(w).stem}.txt'  # filename to save to
             y = []  # y axis
-            for i in x:  # img-size
+            for i in x:  # img-s ize
                 LOGGER.info(f'\nRunning {f} point {i}...')
                 r, _, t = run(opt.data, weights=w, batch_size=opt.batch_size, imgsz=i, conf_thres=opt.conf_thres,
-                              iou_thres=opt.iou_thres, device=opt.device, save_json=opt.save_json, save_path=opt.save_apath, plots=False)
+                              iou_thres=opt.iou_thres, device=opt.device, save_json=opt.save_json, save_path=opt.save_path, 
+                              tracker=opt.tracker, plots=False)
                 y.append(r + t)  # results and times
             np.savetxt(f, y, fmt='%10.4g')  # save
         os.system('zip -r study.zip study_*.txt')
