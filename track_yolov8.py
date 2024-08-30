@@ -53,6 +53,7 @@ def run(data,
         save_dir=Path(''),
         save_path=ROOT / 'track/results',
         tracker="bytetrack",
+        tensorrt=False,
         config_deepsort=None,
         augment=False,
         verbose=False,
@@ -74,6 +75,9 @@ def run(data,
 
     # Load model
     model = YOLO(weights, )
+    # if tensorrt:
+    #     model.export(format="engine")
+    
     gs = 32
     imgsz = check_img_size(imgsz, s=gs)  # check image size
 
@@ -202,6 +206,7 @@ def parse_opt():
     parser.add_argument('--end2end', type=bool, default=False, help='is model compiled to end2end?') 
     parser.add_argument('--save-path', type=str, default=ROOT / 'drone_quantization/track/results' ,help='path to save results')
     parser.add_argument('--tracker', type=str, choices=['bytetrack', 'botsort'] ,default=ROOT / 'drone_quantization/track/results' ,help='path to save results')
+    parser.add_argument('--tensorrt', action='store_true', help='whether to export the model to tensorrt.') 
 
 
     opt = parser.parse_args()
