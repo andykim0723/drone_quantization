@@ -3,6 +3,7 @@ scripts/
 weights/
 datasets/
 track/results/
+ultralytics/
 
 *.pt
 *.pyc

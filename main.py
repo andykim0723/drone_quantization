@@ -14,7 +14,7 @@ ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 def main(opt):
     model = YOLO(opt.weight, task='detect')
     model.train(data=opt.data_cfg, epochs=opt.epoch, imgsz=opt.imgsz, device=opt.device, batch=opt.batch_size, optimizer='Adam', 
-            weight_decay=1e-5)
+            weight_decay=1e-5, save_period=opt.save_period)
     # model.train(data='./cfgs/VisDrone_custom.yaml', epochs=100, imgsz=640, device='0, 1', batch=64, optimizer='Adam', 
     #          weight_decay=5e-6)
 
@@ -27,6 +27,7 @@ def parse_opt():
     parser.add_argument('--imgsz', '--img', '--img-size', type=int, default=640, help='inference size (pixels)')
     parser.add_argument('--batch-size', type=int, default=24, help='batch size')
     parser.add_argument('--device', type=str, default='0, 1', help='gpu device')
+    parser.add_argument('--save-period', type=int, default=1, help='save interval')
 
     opt = parser.parse_args()
 
